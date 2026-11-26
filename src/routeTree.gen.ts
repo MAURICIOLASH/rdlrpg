@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OClaRouteImport } from './routes/o-cla'
+import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OClaRoute = OClaRouteImport.update({
+  id: '/o-cla',
+  path: '/o-cla',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecrutamentoRoute = RecrutamentoRouteImport.update({
+  id: '/recrutamento',
+  path: '/recrutamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/o-cla': typeof OClaRoute
+  '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/o-cla': typeof OClaRoute
+  '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/o-cla': typeof OClaRoute
+  '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/o-cla' | '/recrutamento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/o-cla' | '/recrutamento'
+  id: '__root__' | '/' | '/o-cla' | '/recrutamento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OClaRoute: typeof OClaRoute
+  RecrutamentoRoute: typeof RecrutamentoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/o-cla': {
+      id: '/o-cla'
+      path: '/o-cla'
+      fullPath: '/o-cla'
+      preLoaderRoute: typeof OClaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recrutamento': {
+      id: '/recrutamento'
+      path: '/recrutamento'
+      fullPath: '/recrutamento'
+      preLoaderRoute: typeof RecrutamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OClaRoute: OClaRoute,
+  RecrutamentoRoute: RecrutamentoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
