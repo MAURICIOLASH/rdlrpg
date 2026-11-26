@@ -54,10 +54,10 @@ function AdminPage() {
       {admin.isLoading ? <Loader2 className="mx-auto animate-spin text-silver" /> :
         admin.data !== true ? <p className="stone-texture metal-border p-6 text-foreground/80">Sua conta não tem permissão de administrador.</p> : (
         <>
-          <nav className="mb-8 flex gap-1 border-b border-border" role="tablist">
+          <nav className="mb-8 flex gap-1 overflow-x-auto border-b border-border" role="tablist">
             {TABS.map(([k, l]) => (
               <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
-                className={`-mb-px border-b-2 px-4 py-3 font-display text-[11px] tracking-[0.25em] transition-colors ${tab === k ? "border-silver text-primary" : "border-transparent text-steel hover:text-silver"}`}>{l.toUpperCase()}</button>
+                className={`-mb-px shrink-0 border-b-2 px-3 py-3 sm:px-4 font-display text-[11px] tracking-[0.25em] transition-colors ${tab === k ? "border-silver text-primary" : "border-transparent text-steel hover:text-silver"}`}>{l.toUpperCase()}</button>
             ))}
           </nav>
           {tab === "config" ? <SettingsPanel /> :
