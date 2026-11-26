@@ -25,7 +25,7 @@ describe("protocolo e mapeamento", () => {
     expect(a).not.toBe(b);
   });
   it("converte nível e respostas Sim/Não", () => {
-    const r = toApplicationRow({ ...(base as never), outrosClas: "Não", participar: "Sim" });
+    const r = toApplicationRow({ ...base, outrosClas: "Não", participar: "Sim" } as never);
     expect(r.character_level).toBe(120);
     expect(r.event_participation).toBe(true);
     expect(r.previous_clan_details).toBeNull();
