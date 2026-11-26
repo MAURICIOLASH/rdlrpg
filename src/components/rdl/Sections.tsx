@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Shield, Swords, Users, ChevronDown } from "lucide-react";
-import castle from "@/assets/castle-fog.jpg";
-import { Logo } from "./Logo";
+import castle from "@/assets/castle-fire.jpg";
+import { LogoReveal } from "./LogoReveal";
 import { Ash } from "./Ash";
 import { Reveal, Ornament } from "./Reveal";
 import { useSiteSettings } from "@/lib/use-site-settings";
@@ -21,14 +21,13 @@ export function Hero() {
   const { settings } = useSiteSettings();
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-16">
-      <img src={castle} alt="" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-b from-abyss/70 via-abyss/30 to-abyss" />
+      <img src={castle} alt="" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-75" />
+      <div className="absolute inset-0 bg-gradient-to-b from-abyss/60 via-abyss/30 to-abyss" />
+      <div className="fire-glow absolute inset-x-0 bottom-0 h-2/3" />
       <div className="smoke absolute -left-1/4 bottom-0 h-1/2 w-[150%]" />
       <Ash />
       <div className="relative z-10 flex flex-col items-center text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.4, delay: 0.3 }}>
-          <Logo className="mb-4 h-44 sm:h-60 md:h-72" />
-        </motion.div>
+        <div className="mb-4"><LogoReveal className="h-44 sm:h-60 md:h-72" delay={0.3} embers={22} /></div>
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.9 }}
           className="font-display text-3xl font-black tracking-[0.3em] text-primary sm:text-5xl">
           RDL INFERNAIS
@@ -97,11 +96,11 @@ export function Recruit() {
   const { settings } = useSiteSettings();
   return (
     <section className="relative overflow-hidden border-y border-border px-4 py-24 sm:py-32">
-      <img src={castle} alt="" loading="lazy" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-20" />
+      <img src={castle} alt="" loading="lazy" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-30" />
       <div className="absolute inset-0 bg-gradient-to-b from-abyss via-abyss/60 to-abyss" />
       <div className="smoke absolute -right-1/4 top-1/4 h-1/2 w-[120%]" />
       <Reveal className="relative mx-auto max-w-3xl text-center">
-        <Logo className="mx-auto h-20 opacity-90" />
+        <LogoReveal className="mx-auto h-20" embers={10} />
         <h2 className="mt-6 font-gothic text-4xl text-metal sm:text-6xl">Sua jornada começa aqui.</h2>
         <div className="mt-6"><Ornament /></div>
         <p className="mt-6 text-lg text-foreground/80">

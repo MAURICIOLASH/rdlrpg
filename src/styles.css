@@ -31,6 +31,8 @@
   --color-silver: var(--silver);
   --color-steel: var(--steel);
   --color-abyss: var(--abyss);
+  --color-ember: var(--ember);
+  --color-blood: var(--blood);
   --font-gothic: "UnifrakturCook", "UnifrakturMaguntia", serif;
   --font-display: "Cinzel", serif;
   --font-sans: "Barlow", system-ui, sans-serif;
@@ -60,6 +62,9 @@
   --ring: oklch(0.57 0 0);
   --silver: oklch(0.85 0 0);
   --steel: oklch(0.57 0 0);
+  --ember: oklch(0.72 0.19 45);
+  --blood: oklch(0.45 0.18 25);
+  --glow-ember: 0 0 40px oklch(0.55 0.2 30 / 0.35);
 
   --gradient-metal: linear-gradient(180deg, oklch(0.42 0 0) 0%, oklch(0.2 0 0) 45%, oklch(0.12 0 0) 55%, oklch(0.26 0 0) 100%);
   --gradient-metal-hover: linear-gradient(180deg, oklch(0.55 0 0) 0%, oklch(0.28 0 0) 45%, oklch(0.16 0 0) 55%, oklch(0.34 0 0) 100%);
@@ -147,7 +152,7 @@
   100% { transform: translateX(10%) scale(1.15); opacity: 0.25; }
 }
 @utility smoke {
-  background: radial-gradient(ellipse at center, oklch(0.6 0 0 / 0.18), transparent 60%);
+  background: radial-gradient(ellipse at center, oklch(0.45 0.15 28 / 0.28), transparent 60%);
   filter: blur(40px);
   animation: smoke-drift 22s ease-in-out infinite alternate;
 }
@@ -162,8 +167,34 @@
   position: absolute;
   bottom: -10px;
   border-radius: 9999px;
-  background: var(--silver);
+  background: var(--ember);
+  box-shadow: 0 0 6px var(--ember), 0 0 12px var(--blood);
   animation: ash-rise linear infinite;
+}
+
+@keyframes ember-fall {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  15% { opacity: var(--o, 0.9); }
+  80% { opacity: var(--o, 0.9); }
+  100% { transform: translate3d(var(--dx, 10px), var(--fall, 140px), 0) scale(0.3); opacity: 0; }
+}
+@utility ember {
+  position: absolute;
+  top: -6px;
+  border-radius: 9999px;
+  background: oklch(0.85 0.15 70);
+  box-shadow: 0 0 4px var(--ember), 0 0 10px var(--blood);
+  animation: ember-fall ease-in infinite;
+}
+
+@keyframes fire-flicker {
+  0%, 100% { opacity: 0.55; }
+  40% { opacity: 0.75; }
+  60% { opacity: 0.5; }
+}
+@utility fire-glow {
+  background: radial-gradient(ellipse at 50% 100%, oklch(0.5 0.2 30 / 0.45), transparent 65%);
+  animation: fire-flicker 4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

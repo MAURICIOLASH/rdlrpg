@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Logo } from "./Logo";
+import { LogoReveal } from "./LogoReveal";
 import { Ash } from "./Ash";
 
 export function Intro() {
@@ -8,7 +8,7 @@ export function Intro() {
   const [show, setShow] = useState(true);
   useEffect(() => {
     if (sessionStorage.getItem("rdl-intro")) { setShow(false); return; }
-    const t = setTimeout(() => { setShow(false); sessionStorage.setItem("rdl-intro", "1"); }, reduce ? 600 : 3600);
+    const t = setTimeout(() => { setShow(false); sessionStorage.setItem("rdl-intro", "1"); }, reduce ? 600 : 4200);
     return () => clearTimeout(t);
   }, [reduce]);
   return (
@@ -20,13 +20,8 @@ export function Intro() {
           onClick={() => setShow(false)}
         >
           <Ash count={30} />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, filter: "blur(12px)", clipPath: "inset(50% 0 50% 0)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)", clipPath: "inset(0% 0 0% 0)" }}
-            transition={{ duration: 1.6, ease: [0.2, 0.7, 0.2, 1] }}
-          >
-            <Logo className="h-40 sm:h-56" />
-          </motion.div>
+          <div aria-hidden className="fire-glow absolute inset-x-0 bottom-0 h-1/2" />
+          <LogoReveal className="h-40 sm:h-56" embers={16} />
           <motion.h1
             className="mt-6 font-display text-xl sm:text-3xl font-bold tracking-[0.4em] text-primary"
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: 0.8 }}
