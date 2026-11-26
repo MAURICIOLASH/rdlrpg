@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
@@ -57,11 +58,11 @@ function AuthPage() {
         <input className="field-dark" type="email" required autoComplete="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input className="field-dark" type="password" required autoComplete="current-password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
         {error && <p role="alert" className="text-sm text-primary">⸸ {error}</p>}
-        <button type="submit" disabled={busy} className="btn-metal flex w-full items-center justify-center gap-2 py-3 text-xs">
+        <Button type="submit" disabled={busy} className="btn-metal flex w-full items-center justify-center gap-2 py-3 text-xs">
           {busy ? <Loader2 className="size-4 animate-spin" /> : null} Entrar
-        </button>
+        </Button>
         {info && <p role="status" className="text-sm text-silver">{info}</p>}
-        <button type="button" onClick={forgot} disabled={busy} className="block w-full text-center text-xs text-silver underline-offset-4 hover:underline">Esqueci minha senha</button>
+        <Button type="button" onClick={forgot} disabled={busy} variant="ghost" className="w-full text-xs">Esqueci minha senha</Button>
         <p className="text-center text-xs text-steel">Acesso somente para administradores autorizados.</p>
       </form>
     </div>

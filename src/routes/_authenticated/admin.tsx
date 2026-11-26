@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -49,15 +50,15 @@ function AdminPage() {
           <p className="font-display text-[10px] tracking-[0.4em] text-steel">RDL INFERNAIS</p>
           <h1 className="font-display text-2xl font-black tracking-[0.2em] text-metal sm:text-4xl">PAINEL DE COMANDO</h1>
         </div>
-        <button onClick={signOut} className="btn-ghost-metal flex items-center gap-2 px-4 py-2 text-[11px]"><LogOut className="size-4" /> Sair</button>
+        <Button onClick={signOut} className="btn-ghost-metal flex items-center gap-2 px-4 py-2 text-[11px]"><LogOut className="size-4" /> Sair</Button>
       </div>
       {admin.isLoading ? <Loader2 className="mx-auto animate-spin text-silver" /> :
         admin.data !== true ? <p className="stone-texture metal-border p-6 text-foreground/80">Sua conta não tem permissão de administrador.</p> : (
         <>
           <nav className="mb-8 flex gap-1 overflow-x-auto border-b border-border" role="tablist">
             {TABS.map(([k, l]) => (
-              <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
-                className={`-mb-px shrink-0 border-b-2 px-3 py-3 sm:px-4 font-display text-[11px] tracking-[0.25em] transition-colors ${tab === k ? "border-silver text-primary" : "border-transparent text-steel hover:text-silver"}`}>{l.toUpperCase()}</button>
+              <Button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}
+                variant="ghost" className="shrink-0 px-3 py-3 text-[11px] sm:px-4">{l.toUpperCase()}</Button>
             ))}
           </nav>
           {tab === "config" ? <SettingsPanel /> :

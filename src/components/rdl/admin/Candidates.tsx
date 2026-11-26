@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Copy, Eye } from "lucide-react";
 import { toast } from "sonner";
@@ -55,9 +56,9 @@ export function Candidates({ apps }: { apps: AdminApp[] }) {
 
   const Th = ({ k, children }: { k: SortKey; children: string }) => (
     <th className="px-3 py-3 text-left">
-      <button onClick={() => setSort({ k, asc: sort.k === k ? !sort.asc : true })} className="flex items-center gap-1 font-display text-[10px] tracking-[0.2em] text-steel hover:text-primary">
+      <Button onClick={() => setSort({ k, asc: sort.k === k ? !sort.asc : true })} variant="ghost" size="sm" className="gap-1 text-[10px]">
         {children.toUpperCase()}{sort.k === k && (sort.asc ? <ArrowUp className="size-3" /> : <ArrowDown className="size-3" />)}
-      </button>
+      </Button>
     </th>
   );
 
@@ -82,7 +83,7 @@ export function Candidates({ apps }: { apps: AdminApp[] }) {
       </div>
       <div className="flex items-center justify-between text-xs text-steel">
         <span>{rows.length} inscrição(ões)</span>
-        <button onClick={() => { setF(EMPTY_FILTERS); setPage(0); }} className="underline-offset-4 hover:underline">Limpar filtros</button>
+        <Button onClick={() => { setF(EMPTY_FILTERS); setPage(0); }} variant="ghost" size="sm" className="text-xs">Limpar filtros</Button>
       </div>
       <div className="stone-texture metal-border overflow-x-auto">
         <table className="w-full min-w-[820px] text-sm">
@@ -99,14 +100,14 @@ export function Candidates({ apps }: { apps: AdminApp[] }) {
                 <td className="px-3 py-3">{a.character_level}</td>
                 <td className="px-3 py-3">{a.player_name}</td>
                 <td className="px-3 py-3">
-                  <button onClick={(e) => { e.stopPropagation(); copyText(a.discord, "Discord"); }} className="flex items-center gap-1.5 hover:text-primary" title="Copiar Discord">
+                  <Button onClick={(e) => { e.stopPropagation(); copyText(a.discord, "Discord"); }} variant="ghost" size="sm" className="gap-1.5 text-xs normal-case" title="Copiar Discord">
                     {a.discord}<Copy className="size-3 text-steel" />
-                  </button>
+                  </Button>
                 </td>
                 <td className="px-3 py-3 text-steel">{fmtDate(a.created_at)}</td>
                 <td className="px-3 py-3"><StatusBadge status={a.status} /></td>
                 <td className="px-3 py-3 text-right">
-                  <button onClick={(e) => { e.stopPropagation(); setOpenId(a.id); }} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Eye className="size-3.5" /> Ver</button>
+                  <Button onClick={(e) => { e.stopPropagation(); setOpenId(a.id); }} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Eye className="size-3.5" /> Ver</Button>
                 </td>
               </tr>
             ))}
@@ -116,9 +117,9 @@ export function Candidates({ apps }: { apps: AdminApp[] }) {
       </div>
       {pages > 1 && (
         <div className="flex items-center justify-center gap-4 text-sm">
-          <button disabled={cur === 0} onClick={() => setPage(cur - 1)} className="btn-ghost-metal p-2 disabled:opacity-30" aria-label="Página anterior"><ChevronLeft className="size-4" /></button>
+          <Button disabled={cur === 0} onClick={() => setPage(cur - 1)} variant="ghost" size="icon" aria-label="Página anterior"><ChevronLeft className="size-4" /></Button>
           <span className="font-display text-xs tracking-[0.2em] text-steel">PÁGINA {cur + 1} DE {pages}</span>
-          <button disabled={cur >= pages - 1} onClick={() => setPage(cur + 1)} className="btn-ghost-metal p-2 disabled:opacity-30" aria-label="Próxima página"><ChevronRight className="size-4" /></button>
+          <Button disabled={cur >= pages - 1} onClick={() => setPage(cur + 1)} variant="ghost" size="icon" aria-label="Próxima página"><ChevronRight className="size-4" /></Button>
         </div>
       )}
       <DetailDialog app={open} onClose={() => setOpenId(null)} />

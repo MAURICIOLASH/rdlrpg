@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
@@ -167,14 +168,14 @@ export function RecruitForm() {
           <p role="alert" className="mt-8 border border-silver bg-secondary px-4 py-3 text-sm text-primary">⸸ {submitError}</p>
         )}
         <div className="mt-10 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between">
-          <button type="button" onClick={() => go(step - 1)} disabled={step === 0 || isSubmitting}
-            className="btn-ghost-metal px-6 py-3 text-xs disabled:invisible">Voltar</button>
+          <Button type="button" onClick={() => go(step - 1)} disabled={step === 0 || isSubmitting}
+            className={`btn-ghost-metal px-6 py-3 text-xs ${step === 0 ? "invisible" : ""}`}>Voltar</Button>
           {step < 3 ? (
-            <button key="next" type="button" onClick={next} className="btn-metal px-8 py-3 text-xs">Próxima Etapa</button>
+            <Button key="next" type="button" onClick={next} className="btn-metal px-8 py-3 text-xs">Próxima Etapa</Button>
           ) : (
-            <button key="submit" type="submit" disabled={isSubmitting} className="btn-metal flex items-center justify-center gap-2 px-8 py-3 text-xs disabled:opacity-70">
+            <Button key="submit" type="submit" disabled={isSubmitting} className="btn-metal flex items-center justify-center gap-2 px-8 py-3 text-xs ">
               {isSubmitting ? <><Loader2 className="size-4 animate-spin" /> Enviando…</> : "Enviar Inscrição"}
-            </button>
+            </Button>
           )}
         </div>
       </form>
@@ -215,7 +216,7 @@ function Review({ data, onEdit }: { data: Application; onEdit: (n: number) => vo
         <div key={title} className="border border-border bg-abyss/60 p-4 sm:p-5">
           <div className="mb-3 flex items-center justify-between">
             <h4 className="font-display text-xs font-bold tracking-[0.25em] text-silver">{title.toUpperCase()}</h4>
-            <button type="button" onClick={() => onEdit(n)} className="text-xs text-steel underline underline-offset-4 hover:text-primary">Editar</button>
+            <Button type="button" onClick={() => onEdit(n)} variant="ghost" size="sm" className="text-xs">Editar</Button>
           </div>
           <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-[10rem_1fr]">
             {rows.map(([k, v]) => (<div key={k} className="contents"><dt className="text-xs uppercase tracking-wider text-steel">{k}</dt><dd className="break-words text-sm text-primary">{v || "—"}</dd></div>))}

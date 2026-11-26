@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -17,13 +18,13 @@ function ListEditor({ label, items, onChange, placeholder, max }: { label: strin
         {items.map((it, i) => (
           <li key={i} className="flex gap-2">
             <input className="field-dark" maxLength={max} value={it} onChange={(e) => onChange(items.map((x, j) => (j === i ? e.target.value : x)))} aria-label={`${label} ${i + 1}`} />
-            <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} className="btn-ghost-metal px-3" aria-label="Remover"><Trash2 className="size-4" /></button>
+            <Button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))} variant="ghost" size="icon" className="self-center" aria-label="Remover" title="Remover"><Trash2 className="size-4" /></Button>
           </li>
         ))}
       </ul>
       <div className="flex gap-2">
         <input className="field-dark" maxLength={max} placeholder={placeholder} value={draft} onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }} />
-        <button type="button" onClick={add} className="btn-ghost-metal inline-flex items-center gap-1 px-3 text-[10px]"><Plus className="size-4" /> Adicionar</button>
+        <Button type="button" onClick={add} className="btn-ghost-metal inline-flex items-center gap-1 px-3 text-[10px]"><Plus className="size-4" /> Adicionar</Button>
       </div>
     </div>
   );
@@ -63,7 +64,7 @@ export function SettingsPanel() {
           <p className="mt-1 text-xs text-steel">Quando fechado, o site não aceita novas inscrições.</p>
         </div>
         <button type="button" role="switch" aria-checked={s.recruitment_open} onClick={() => setS({ ...s, recruitment_open: !s.recruitment_open })}
-          className={`relative h-8 w-16 border transition-colors ${s.recruitment_open ? "border-silver bg-silver/20" : "border-border bg-muted"}`} aria-label="Recrutamento aberto">
+          className="rdl-switch relative h-8 w-16 shrink-0" aria-label="Recrutamento aberto">
           <span className={`absolute top-1 size-5 bg-silver transition-all ${s.recruitment_open ? "left-9" : "left-1 opacity-50"}`} />
         </button>
       </div>
@@ -79,7 +80,7 @@ export function SettingsPanel() {
         <ListEditor label="CLASSES DISPONÍVEIS" items={s.classes} onChange={(v) => setS({ ...s, classes: v })} placeholder="Nova classe" max={40} />
       </div>
       <div className="flex justify-end">
-        <button onClick={submit} disabled={m.isPending || !loaded} className="btn-metal px-8 py-3 text-xs">{m.isPending ? "Salvando…" : "Salvar configurações"}</button>
+        <Button onClick={submit} disabled={m.isPending || !loaded} className="btn-metal px-8 py-3 text-xs">{m.isPending ? "Salvando…" : "Salvar configurações"}</Button>
       </div>
     </div>
   );

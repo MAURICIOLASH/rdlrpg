@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
@@ -47,9 +48,9 @@ function ResetPage() {
         <input className="field-dark" type="password" required autoComplete="new-password" placeholder="Nova senha" value={pw} onChange={(e) => setPw(e.target.value)} />
         <input className="field-dark" type="password" required autoComplete="new-password" placeholder="Confirmar senha" value={pw2} onChange={(e) => setPw2(e.target.value)} />
         {error && <p role="alert" className="text-sm text-primary">⸸ {error}</p>}
-        <button type="submit" disabled={busy} className="btn-metal flex w-full items-center justify-center gap-2 py-3 text-xs">
+        <Button type="submit" disabled={busy} className="btn-metal flex w-full items-center justify-center gap-2 py-3 text-xs">
           {busy ? <Loader2 className="size-4 animate-spin" /> : null} Salvar senha
-        </button>
+        </Button>
       </form>
     </div>
   );

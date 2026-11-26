@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { AdminApp } from "./shared";
@@ -45,7 +46,7 @@ export function Dashboard({ apps }: { apps: AdminApp[] }) {
           <h2 className="font-display text-sm font-bold tracking-[0.3em] text-primary">INSCRIÇÕES POR PERÍODO</h2>
           <div className="flex gap-2">
             {PERIODS.map((p) => (
-              <button key={p.d} onClick={() => setDays(p.d)} className={`border px-3 py-1 font-display text-[10px] tracking-[0.2em] ${days === p.d ? "border-silver text-primary" : "border-border text-steel"}`}>{p.l}</button>
+              <Button key={p.d} onClick={() => setDays(p.d)} variant="ghost" size="sm" aria-pressed={days === p.d} className="text-[10px]">{p.l}</Button>
             ))}
           </div>
         </div>

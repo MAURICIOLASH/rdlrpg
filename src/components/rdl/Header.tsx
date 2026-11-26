@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -27,9 +28,9 @@ export function Header() {
           ))}
           <Link to="/recrutamento" className="btn-metal px-5 py-2.5 text-[11px]">Ingressar no Clã</Link>
         </nav>
-        <button className="md:hidden p-2 text-silver" onClick={() => setOpen(!open)} aria-label="Menu">
+        <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open}>
           {open ? <X /> : <Menu />}
-        </button>
+        </Button>
       </div>
       {open && (
         <nav className="md:hidden stone-texture border-t border-border px-4 py-6 flex flex-col gap-5">

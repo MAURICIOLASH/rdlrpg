@@ -71,6 +71,20 @@
   --gradient-silver-text: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.85 0 0) 45%, oklch(0.5 0 0) 60%, oklch(0.9 0 0) 100%);
   --shadow-metal: inset 0 1px 0 oklch(1 0 0 / 0.25), inset 0 -1px 0 oklch(0 0 0 / 0.6), 0 8px 24px -8px oklch(0 0 0 / 0.9);
   --glow-silver: 0 0 40px oklch(1 0 0 / 0.12);
+  --button-frame: linear-gradient(180deg, oklch(0.78 0.025 65), oklch(0.4 0.02 60) 42%, oklch(0.2 0.01 40) 58%, oklch(0.62 0.025 65));
+  --button-face: linear-gradient(180deg, oklch(0.51 0.16 27), oklch(0.32 0.12 25) 48%, oklch(0.23 0.08 25) 55%, oklch(0.4 0.13 27));
+  --button-face-secondary: linear-gradient(180deg, oklch(0.34 0.07 27), oklch(0.18 0.04 25) 52%, oklch(0.27 0.065 27));
+  --button-face-hover: linear-gradient(180deg, oklch(0.58 0.18 27), oklch(0.37 0.14 25) 48%, oklch(0.27 0.1 25) 55%, oklch(0.47 0.15 27));
+  --button-face-pressed: linear-gradient(180deg, oklch(0.23 0.08 25), oklch(0.34 0.12 27));
+  --button-face-disabled: linear-gradient(180deg, oklch(0.29 0.04 27), oklch(0.19 0.02 25), oklch(0.25 0.03 27));
+  --button-shine: linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.3) 50%, transparent 70%);
+  --button-shadow: 0 1px 2px oklch(0 0 0 / 0.9);
+  --button-inset: inset 0 1px 0 oklch(1 0 0 / 0.16), inset 0 -2px 5px oklch(0 0 0 / 0.7);
+  --button-pressed-inset: inset 0 3px 8px oklch(0 0 0 / 0.75);
+  --button-focus: oklch(0.8 0.13 30);
+  --button-rest-filter: drop-shadow(0 4px 6px oklch(0 0 0 / 0.65));
+  --button-hover-filter: drop-shadow(0 4px 6px oklch(0 0 0 / 0.65)) drop-shadow(0 0 7px oklch(0.55 0.18 27 / 0.35));
+  --button-focus-filter: drop-shadow(0 0 3px var(--button-focus)) drop-shadow(0 0 8px oklch(0.55 0.18 27 / 0.35));
 }
 
 @layer base {
@@ -110,91 +124,87 @@
   box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.8), inset 0 1px 0 oklch(1 0 0 / 0.08);
 }
 
-@utility btn-metal {
+/* One surface and state system for actions, CTA links, tabs and icon buttons. */
+.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch {
+  --cut: 12px;
+  --button-surface: var(--button-face);
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  --cut: 14px;
   clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% 50%, calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 50%);
-  padding-inline: calc(var(--cut) + 1.5rem) !important;
-  background: linear-gradient(180deg, oklch(0.78 0.03 70) 0%, oklch(0.42 0.03 60) 40%, oklch(0.22 0.01 40) 60%, oklch(0.6 0.03 65) 100%);
+  border: 0;
+  border-radius: 0;
+  padding-inline: calc(var(--cut) + 0.9rem);
+  background: var(--button-frame);
   color: var(--primary);
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0;
+  text-align: center;
   text-transform: uppercase;
-  text-shadow: 0 1px 2px oklch(0 0 0 / 0.9);
-  filter: drop-shadow(0 6px 10px oklch(0 0 0 / 0.8));
-  transition: filter 0.35s, transform 0.2s;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 2px;
-    z-index: -2;
-    clip-path: inherit;
-    background:
-      linear-gradient(180deg, oklch(1 0 0 / 0.18) 0%, transparent 35%, oklch(0 0 0 / 0.35) 100%),
-      radial-gradient(ellipse at 50% 40%, oklch(0.5 0.19 27), oklch(0.3 0.13 25) 70%, oklch(0.18 0.07 25));
-    box-shadow: inset 0 0 12px oklch(0 0 0 / 0.7);
-    transition: background 0.35s;
-  }
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.4) 50%, transparent 70%);
-    transform: translateX(-120%);
-    transition: transform 0.8s ease;
-  }
-  &:hover {
-    filter: drop-shadow(0 6px 10px oklch(0 0 0 / 0.8)) drop-shadow(0 0 10px oklch(0.55 0.2 27 / 0.45));
-  }
-  &:hover::before {
-    background:
-      linear-gradient(180deg, oklch(1 0 0 / 0.28) 0%, transparent 35%, oklch(0 0 0 / 0.3) 100%),
-      radial-gradient(ellipse at 50% 40%, oklch(0.58 0.2 27), oklch(0.36 0.15 25) 70%, oklch(0.2 0.08 25));
-  }
-  &:hover::after { transform: translateX(120%); }
-  &:active { transform: translateY(1px); }
+  text-decoration: none;
+  text-shadow: var(--button-shadow);
+  filter: var(--button-rest-filter);
+  cursor: pointer;
+  transition: filter 0.25s, transform 0.15s, opacity 0.25s;
 }
-
-@utility btn-ghost-metal {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  --cut: 10px;
-  clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% 50%, calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 50%);
-  padding-inline: calc(var(--cut) + 0.75rem) !important;
-  background: linear-gradient(180deg, oklch(0.6 0.02 65) 0%, oklch(0.32 0.02 50) 45%, oklch(0.18 0 0) 60%, oklch(0.48 0.02 60) 100%);
+.btn-ghost-metal, .rdl-button-secondary { --button-surface: var(--button-face-secondary); }
+.rdl-button-compact { --cut: 7px; padding: 0.4rem 0.85rem; min-height: 2rem; }
+.rdl-button-icon { --cut: 7px; padding: 0; flex-shrink: 0; }
+.rdl-switch { --cut: 6px; padding: 0; }
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch)::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -2;
+  clip-path: inherit;
+  background: var(--button-surface);
+  box-shadow: var(--button-inset);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--button-shine);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  :is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):hover:not(:disabled):not([aria-disabled="true"]) {
+    --button-surface: var(--button-face-hover);
+    filter: var(--button-hover-filter);
+  }
+  :is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):hover:not(:disabled):not([aria-disabled="true"])::after { transform: translateX(120%); }
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):focus-visible {
+  outline: none;
+  filter: var(--button-focus-filter);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):focus-visible::before {
+  box-shadow: inset 0 0 0 2px var(--button-focus), var(--button-inset);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):is([aria-selected="true"], [aria-pressed="true"], [aria-checked="true"]) {
+  --button-surface: var(--button-face-hover);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):active:not(:disabled):not([aria-disabled="true"]) {
+  --button-surface: var(--button-face-pressed);
+  transform: translateY(1px);
+  filter: var(--button-rest-filter);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):active:not(:disabled):not([aria-disabled="true"])::before {
+  box-shadow: var(--button-pressed-inset);
+}
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):is(:disabled, [aria-disabled="true"]) {
+  --button-surface: var(--button-face-disabled);
   color: var(--silver);
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  transition: color 0.3s, filter 0.3s;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    z-index: -2;
-    clip-path: inherit;
-    background: linear-gradient(180deg, oklch(0.2 0.01 30), oklch(0.09 0 0));
-    transition: background 0.3s;
-  }
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(110deg, transparent 30%, oklch(1 0 0 / 0.25) 50%, transparent 70%);
-    transform: translateX(-120%);
-    transition: transform 0.8s ease;
-  }
-  &:hover { color: var(--primary); filter: drop-shadow(0 0 8px oklch(0.55 0.2 27 / 0.4)); }
-  &:hover::before { background: linear-gradient(180deg, oklch(0.26 0.04 27), oklch(0.12 0.02 25)); }
-  &:hover::after { transform: translateX(120%); }
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
 }
+:is(.btn-metal, .btn-ghost-metal, .rdl-button, .rdl-switch):is(:disabled, [aria-disabled="true"])::after { display: none; }
 
 @keyframes smoke-drift {
   0% { transform: translateX(-10%) scale(1); opacity: 0.25; }

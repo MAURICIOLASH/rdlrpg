@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -66,9 +67,9 @@ export function DetailDialog({ app, onClose }: { app: AdminApp | null; onClose: 
         {a.reviewed_at && <p className="text-xs text-steel">Última análise por <b className="text-silver">{a.reviewer_name}</b> em {fmtDateTime(a.reviewed_at)}</p>}
 
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => copyText(a.discord, "Discord")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar Discord</button>
-          {a.contact && <button onClick={() => copyText(a.contact!, "Contato")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar contato</button>}
-          <button onClick={() => copyText(`${a.character_name} (${a.character_class} nv. ${a.character_level}) — Discord: ${a.discord}${a.contact ? ` — Contato: ${a.contact}` : ""}`, "Dados")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar dados</button>
+          <Button onClick={() => copyText(a.discord, "Discord")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar Discord</Button>
+          {a.contact && <Button onClick={() => copyText(a.contact!, "Contato")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar contato</Button>}
+          <Button onClick={() => copyText(`${a.character_name} (${a.character_class} nv. ${a.character_level}) — Discord: ${a.discord}${a.contact ? ` — Contato: ${a.contact}` : ""}`, "Dados")} className="btn-ghost-metal inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px]"><Copy className="size-3.5" /> Copiar dados</Button>
         </div>
 
         <div className="space-y-6">
@@ -80,16 +81,16 @@ export function DetailDialog({ app, onClose }: { app: AdminApp | null; onClose: 
         <section className="space-y-3 border-t border-border pt-5">
           <h3 className="font-display text-xs font-bold tracking-[0.3em] text-silver">OBSERVAÇÕES ADMINISTRATIVAS</h3>
           <textarea className="field-dark" rows={3} maxLength={2000} placeholder="Anotações visíveis só para a liderança" value={notes} onChange={(e) => setNotes(e.target.value)} />
-          <button onClick={() => m.mutate(a.status as Status)} disabled={m.isPending || notes === (a.admin_notes ?? "")} className="btn-ghost-metal px-4 py-2 text-[10px] disabled:opacity-40">Salvar observação</button>
+          <Button onClick={() => m.mutate(a.status as Status)} disabled={m.isPending || notes === (a.admin_notes ?? "")} className="btn-ghost-metal px-4 py-2 text-[10px] ">Salvar observação</Button>
         </section>
 
         <section className="space-y-3 border-t border-border pt-5">
           <h3 className="font-display text-xs font-bold tracking-[0.3em] text-silver">AÇÕES</h3>
           <div className="flex flex-wrap gap-2">
             {ACTIONS.filter((x) => x.s !== a.status).map((x) => (
-              <button key={x.s} onClick={() => setConfirm(x.s)} disabled={m.isPending} className={`${x.s === "APPROVED" ? "btn-metal" : "btn-ghost-metal"} inline-flex items-center gap-1.5 px-4 py-2 text-[10px]`}>
+              <Button key={x.s} onClick={() => setConfirm(x.s)} disabled={m.isPending} className={`${x.s === "APPROVED" ? "btn-metal" : "btn-ghost-metal"} inline-flex items-center gap-1.5 px-4 py-2 text-[10px]`}>
                 <x.icon className="size-3.5" /> {x.label}
-              </button>
+              </Button>
             ))}
           </div>
         </section>
