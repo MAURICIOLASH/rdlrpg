@@ -29,4 +29,4 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- RDL portal UI lives in src/components/rdl; Logo.tsx is the single place the clan logo renders, so swapping the logo image touches one file.
+- RDL portal UI lives in src/components/rdl; Logo.tsx is the single place the clan logo renders (original image, background removed only, never redrawn); size it with height classes.

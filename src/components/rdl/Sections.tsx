@@ -15,7 +15,7 @@ export function Hero() {
       <Ash />
       <div className="relative z-10 flex flex-col items-center text-center">
         <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.4, delay: 0.3 }}>
-          <Logo className="text-[7rem] sm:text-[10rem] md:text-[13rem]" />
+          <Logo className="mb-4 h-44 sm:h-60 md:h-72" />
         </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.9 }}
           className="font-display text-3xl font-black tracking-[0.3em] text-primary sm:text-5xl">
@@ -87,7 +87,7 @@ export function Recruit() {
       <div className="absolute inset-0 bg-gradient-to-b from-abyss via-abyss/60 to-abyss" />
       <div className="smoke absolute -right-1/4 top-1/4 h-1/2 w-[120%]" />
       <Reveal className="relative mx-auto max-w-3xl text-center">
-        <Logo className="text-6xl opacity-80" />
+        <Logo className="mx-auto h-20 opacity-90" />
         <h2 className="mt-6 font-gothic text-4xl text-metal sm:text-6xl">Sua jornada começa aqui.</h2>
         <div className="mt-6"><Ornament /></div>
         <p className="mt-6 text-lg text-foreground/80">

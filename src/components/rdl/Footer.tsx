@@ -4,7 +4,7 @@ import { Ornament } from "./Reveal";
 export function Footer() {
   return (
     <footer className="stone-texture border-t border-border px-4 py-14 text-center">
-      <Logo className="text-6xl" />
+      <Logo className="mx-auto h-24" />
       <p className="mt-4 font-display text-lg font-bold tracking-[0.35em] text-primary">RDL INFERNAIS</p>
       <p className="mt-2 font-display text-xs tracking-[0.3em] text-steel">PRISTON TALE — ZEPHIRA WORLD</p>
       <div className="my-6"><Ornament /></div>

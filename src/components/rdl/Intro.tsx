@@ -25,7 +25,7 @@ export function Intro() {
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)", clipPath: "inset(0% 0 0% 0)" }}
             transition={{ duration: 1.6, ease: [0.2, 0.7, 0.2, 1] }}
           >
-            <Logo className="text-8xl sm:text-9xl" />
+            <Logo className="h-40 sm:h-56" />
           </motion.div>
           <motion.h1
             className="mt-6 font-display text-xl sm:text-3xl font-bold tracking-[0.4em] text-primary"

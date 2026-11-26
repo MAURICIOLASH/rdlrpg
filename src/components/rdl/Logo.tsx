@@ -1,8 +1,15 @@
-// Provisional mark until the original RDL logo image is supplied; swap the inner content for <img>.
+import logo from "@/assets/rdl-logo.png.asset.json";
+
+// Original RDL logo (white background removed only). Size it with a height class, e.g. "h-10".
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <span className={`font-gothic text-metal inline-block leading-none select-none ${className}`} aria-label="RDL">
-      RDL
-    </span>
+    <img
+      src={logo.url}
+      alt="RDL"
+      width={878}
+      height={818}
+      draggable={false}
+      className={`inline-block w-auto select-none object-contain drop-shadow-[0_0_24px_oklch(1_0_0/0.08)] ${className}`}
+    />
   );
 }
