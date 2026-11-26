@@ -2,10 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
+import { getPublicClasses, submitApplication } from "@/lib/applications.functions";
 import { useForm } from "react-hook-form";
 import {
-  applicationSchema, AVAILABILITY, CLASSES, PLAYTIME, SERVER, SOURCES, STEP_FIELDS, submitApplication, type Application,
+  applicationSchema, AVAILABILITY, CLASSES, PLAYTIME, SERVER, SOURCES, STEP_FIELDS, type Application,
 } from "@/lib/recruitment";
 import { Logo } from "../Logo";
 import { Ornament } from "../Reveal";
@@ -17,6 +20,13 @@ export function RecruitForm() {
   const [step, setStep] = useState(0);
   const [protocol, setProtocol] = useState<string | null>(null);
   const sending = useRef(false);
+  const startedAt = useRef(Date.now());
+  const honeypot = useRef<HTMLInputElement>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const submit = useServerFn(submitApplication);
+  const fetchClasses = useServerFn(getPublicClasses);
+  const { data: remoteClasses } = useQuery({ queryKey: ["classes"], queryFn: () => fetchClasses(), staleTime: 5 * 60_000 });
+  const classes = remoteClasses ?? CLASSES;
   const top = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, trigger, watch, getValues, formState: { errors, isSubmitting } } = useForm<Application>({
     resolver: zodResolver(applicationSchema),
@@ -35,7 +45,14 @@ export function RecruitForm() {
   const onSubmit = handleSubmit(async (data) => {
     if (sending.current || protocol) return;
     sending.current = true;
-    try { setProtocol((await submitApplication(data)).protocol); window.scrollTo({ top: 0, behavior: "smooth" }); } finally { sending.current = false; }
+    setSubmitError(null);
+    try {
+      const res = await submit({ data: { form: data, website: honeypot.current?.value ?? "", startedAt: startedAt.current } });
+      if (res.ok) { setProtocol(res.protocol); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      else setSubmitError(res.error);
+    } catch {
+      setSubmitError("Falha de conexão. Tente novamente.");
+    } finally { sending.current = false; }
   });
 
   if (protocol) return <Confirmation protocol={protocol} />;
@@ -51,6 +68,7 @@ export function RecruitForm() {
       <Progress step={step} />
 
       <form onSubmit={onSubmit} noValidate>
+        <input ref={honeypot} type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
         <AnimatePresence mode="wait">
           <motion.div key={step} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.35 }} className="space-y-6">
             <h3 className="font-display text-sm font-bold tracking-[0.3em] text-primary">
@@ -65,7 +83,7 @@ export function RecruitForm() {
                 <Field label="Classe" required error={e("classe")}>
                   <select className="field-dark" aria-invalid={!!errors.classe} defaultValue="" {...register("classe")}>
                     <option value="" disabled>Selecione…</option>
-                    {CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
+                    {classes.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </Field>
                 <Field label="Nível atual" required error={e("nivel")}>
@@ -139,6 +157,9 @@ export function RecruitForm() {
           </motion.div>
         </AnimatePresence>
 
+        {submitError && step === 3 && (
+          <p role="alert" className="mt-8 border border-silver bg-secondary px-4 py-3 text-sm text-primary">⸸ {submitError}</p>
+        )}
         <div className="mt-10 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between">
           <button type="button" onClick={() => go(step - 1)} disabled={step === 0 || isSubmitting}
             className="btn-ghost-metal px-6 py-3 text-xs disabled:invisible">Voltar</button>

@@ -16,3 +16,18 @@ describe("recrutamento", () => {
   it("exige aceite da privacidade", () =>
     expect(applicationSchema.safeParse({ ...base, privacidade: false }).success).toBe(false));
 });
+
+import { makeProtocol, toApplicationRow } from "./recruitment";
+describe("protocolo e mapeamento", () => {
+  it("protocolo tem formato RDL-ANO-XXXXX-XXXXX e não repete", () => {
+    const a = makeProtocol(new Date("2026-05-01")), b = makeProtocol(new Date("2026-05-01"));
+    expect(a).toMatch(/^RDL-2026-[A-Z2-9]{5}-[A-Z2-9]{5}$/);
+    expect(a).not.toBe(b);
+  });
+  it("converte nível e respostas Sim/Não", () => {
+    const r = toApplicationRow({ ...(base as never), outrosClas: "Não", participar: "Sim" });
+    expect(r.character_level).toBe(120);
+    expect(r.event_participation).toBe(true);
+    expect(r.previous_clan_details).toBeNull();
+  });
+});

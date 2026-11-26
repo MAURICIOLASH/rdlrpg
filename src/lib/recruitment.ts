@@ -15,7 +15,7 @@ const opt = (max: number) => z.string().trim().max(max, `Máximo de ${max} carac
 
 export const step1 = z.object({
   nick: req(30, "Informe o nick do personagem."),
-  classe: z.string().min(1, "Selecione a classe."),
+  classe: z.string().trim().min(1, "Selecione a classe.").max(40),
   nivel: z.string().trim().min(1, "Informe o nível.").regex(/^[1-9]\d{0,3}$/, "O nível deve ser um número inteiro positivo."),
   servidor: z.literal(SERVER),
   tempoJogo: z.enum(PLAYTIME, { message: "Selecione o tempo de jogo." }),
@@ -53,12 +53,30 @@ export const STEP_FIELDS = [
 
 export function makeProtocol(date = new Date()): string {
   const y = date.getFullYear();
-  const rnd = Array.from(crypto.getRandomValues(new Uint8Array(4)), (b) => b.toString(36).padStart(2, "0")).join("").slice(0, 6).toUpperCase();
-  return `RDL-${y}-${rnd}`;
+  const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I to avoid confusion
+  const rnd = Array.from(crypto.getRandomValues(new Uint8Array(10)), (b) => A[b % 32]).join("");
+  return `RDL-${y}-${rnd.slice(0, 5)}-${rnd.slice(5)}`;
 }
 
-// Placeholder until Lovable Cloud is connected: NOTHING is stored yet.
-export async function submitApplication(_data: Application): Promise<{ protocol: string }> {
-  await new Promise((r) => setTimeout(r, 1200));
-  return { protocol: makeProtocol() };
+export function toApplicationRow(d: Application) {
+  return {
+    character_name: d.nick,
+    character_class: d.classe,
+    character_level: Number(d.nivel),
+    server: SERVER,
+    play_time: d.tempoJogo,
+    player_name: d.nome,
+    age: d.idade ? Number(d.idade) : null,
+    discord: d.discord,
+    contact: d.contato || null,
+    availability: d.disponibilidade,
+    previous_clan: d.outrosClas === "Sim",
+    previous_clan_details: d.outrosClas === "Sim" ? d.experiencia : null,
+    reason_to_join: d.motivo,
+    expectations: d.expectativa,
+    event_participation: d.participar === "Sim",
+    discovery_source: d.origem,
+    rules_accepted: d.declaracao,
+    privacy_accepted: d.privacidade,
+  };
 }
