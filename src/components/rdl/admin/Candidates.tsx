@@ -63,8 +63,8 @@ export function Candidates({ apps }: { apps: AdminApp[] }) {
 
   return (
     <div className="space-y-5">
-      <div className="stone-texture metal-border grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-6">
-        <input className="field-dark lg:col-span-2" placeholder="Pesquisar personagem" value={f.q} onChange={set("q")} aria-label="Pesquisar personagem" />
+      <div className="stone-texture metal-border grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3">
+        <input className="field-dark" placeholder="Pesquisar personagem" value={f.q} onChange={set("q")} aria-label="Pesquisar personagem" />
         <select className="field-dark" value={f.cls} onChange={set("cls")} aria-label="Classe">
           <option value="">Todas as classes</option>{classes.map((c) => <option key={c}>{c}</option>)}
         </select>

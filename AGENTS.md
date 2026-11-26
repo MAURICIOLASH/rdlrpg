@@ -31,4 +31,5 @@ use the editor.
 
 - RDL portal UI lives in src/components/rdl; Logo.tsx is the single place the clan logo renders (original image, background removed only, never redrawn); size it with height classes.
 - Recruitment form rules (zod schemas, class list, protocol) live in src/lib/recruitment.ts; submissions go through submitApplication in src/lib/applications.functions.ts (server-side zod, honeypot, min fill time, 24h duplicate check, service-role insert).
+- Editable site texts/toggles live in public.site_settings; src/lib/settings.ts is the single schema+defaults (add new keys there and to the public-read RLS key list). Status changes are logged in public.application_events.
 - Admin rights come only from public.user_roles (has_role); public signup is disabled, admins are created by hand and granted the role via SQL. RLS on applications/site_settings enforces admin for reads/writes.
