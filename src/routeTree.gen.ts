@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OClaRouteImport } from './routes/o-cla'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const OClaRoute = OClaRouteImport.update({
   path: '/o-cla',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecrutamentoRoute = RecrutamentoRouteImport.update({
   id: '/recrutamento',
   path: '/recrutamento',
@@ -32,30 +38,34 @@ const RecrutamentoRoute = RecrutamentoRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/o-cla': typeof OClaRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/o-cla': typeof OClaRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/o-cla': typeof OClaRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/o-cla' | '/recrutamento'
+  fullPaths: '/' | '/o-cla' | '/privacidade' | '/recrutamento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/o-cla' | '/recrutamento'
-  id: '__root__' | '/' | '/o-cla' | '/recrutamento'
+  to: '/' | '/o-cla' | '/privacidade' | '/recrutamento'
+  id: '__root__' | '/' | '/o-cla' | '/privacidade' | '/recrutamento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OClaRoute: typeof OClaRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
   RecrutamentoRoute: typeof RecrutamentoRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OClaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recrutamento': {
       id: '/recrutamento'
       path: '/recrutamento'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OClaRoute: OClaRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
   RecrutamentoRoute: RecrutamentoRoute,
 }
 export const routeTree = rootRouteImport

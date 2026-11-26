@@ -30,3 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - RDL portal UI lives in src/components/rdl; Logo.tsx is the single place the clan logo renders (original image, background removed only, never redrawn); size it with height classes.
+- Recruitment form rules (zod schemas, class list, protocol) live in src/lib/recruitment.ts; submitApplication there is the single seam to swap for real storage.

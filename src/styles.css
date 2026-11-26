@@ -169,3 +169,30 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+@utility field-dark {
+  width: 100%;
+  background: oklch(0.06 0 0);
+  border: 1px solid oklch(0.3 0 0);
+  color: var(--primary);
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  &::placeholder { color: oklch(0.45 0 0); }
+  &:focus { outline: none; border-color: var(--silver); box-shadow: 0 0 0 1px var(--silver), var(--glow-silver); }
+  &[aria-invalid="true"] { border-color: oklch(0.75 0 0); border-style: dashed; }
+  &:disabled { color: var(--steel); }
+}
+
+@utility choice {
+  border: 1px solid oklch(0.3 0 0);
+  background: oklch(0.06 0 0);
+  color: var(--silver);
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  &:hover { border-color: var(--steel); }
+  &:has(input:checked) { border-color: var(--primary); color: var(--primary); background: oklch(0.18 0 0); box-shadow: var(--glow-silver); }
+  &:has(input:focus-visible) { outline: 1px solid var(--silver); outline-offset: 2px; }
+}
