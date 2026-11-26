@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/rdl/Header";
 import { Footer } from "../components/rdl/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -141,6 +142,7 @@ function RootComponent() {
       <Header />
       <main>
         <Outlet />
+        <Toaster theme="dark" position="bottom-right" />
       </main>
       <Footer />
     </QueryClientProvider>

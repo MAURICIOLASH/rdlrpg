@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useRef, useState } from "react";
-import { getPublicClasses, submitApplication } from "@/lib/applications.functions";
+import { submitApplication } from "@/lib/applications.functions";
+import { useSiteSettings } from "@/lib/use-site-settings";
 import { useForm } from "react-hook-form";
 import {
   applicationSchema, AVAILABILITY, CLASSES, PLAYTIME, SERVER, SOURCES, STEP_FIELDS, type Application,
@@ -24,9 +24,8 @@ export function RecruitForm() {
   const honeypot = useRef<HTMLInputElement>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const submit = useServerFn(submitApplication);
-  const fetchClasses = useServerFn(getPublicClasses);
-  const { data: remoteClasses } = useQuery({ queryKey: ["classes"], queryFn: () => fetchClasses(), staleTime: 5 * 60_000 });
-  const classes = remoteClasses ?? CLASSES;
+  const { settings, loaded } = useSiteSettings();
+  const classes = settings.classes.length ? settings.classes : CLASSES;
   const top = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, trigger, watch, getValues, formState: { errors, isSubmitting } } = useForm<Application>({
     resolver: zodResolver(applicationSchema),
@@ -56,6 +55,13 @@ export function RecruitForm() {
   });
 
   if (protocol) return <Confirmation protocol={protocol} />;
+  if (loaded && !settings.recruitment_open) return (
+    <div className="stone-texture metal-border mx-auto max-w-2xl p-10 text-center">
+      <Logo className="mx-auto h-20 opacity-80" />
+      <p className="mt-6 font-display text-lg font-bold tracking-[0.3em] text-primary">RECRUTAMENTO TEMPORARIAMENTE FECHADO</p>
+      <p className="mt-4 text-foreground/75">No momento não estamos recebendo novas inscrições. Volte em breve.</p>
+    </div>
+  );
   const e = (k: keyof Application) => errors[k]?.message as string | undefined;
 
   return (

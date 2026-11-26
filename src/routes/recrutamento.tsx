@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Ash } from "@/components/rdl/Ash";
 import { Ornament } from "@/components/rdl/Reveal";
+import { RecruitStatus } from "@/components/rdl/Sections";
 import { RecruitForm } from "@/components/rdl/recruit/RecruitForm";
 
 export const Route = createFileRoute("/recrutamento")({
@@ -25,6 +26,7 @@ function Page() {
       <div className="relative mb-10 text-center">
         <h1 className="font-gothic text-4xl text-metal sm:text-6xl">Sua jornada começa aqui.</h1>
         <div className="mt-5"><Ornament /></div>
+        <div className="mt-6"><RecruitStatus /></div>
       </div>
       <div className="relative"><RecruitForm /></div>
     </div>

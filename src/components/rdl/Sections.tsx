@@ -5,8 +5,20 @@ import castle from "@/assets/castle-fog.jpg";
 import { Logo } from "./Logo";
 import { Ash } from "./Ash";
 import { Reveal, Ornament } from "./Reveal";
+import { useSiteSettings } from "@/lib/use-site-settings";
+
+export function RecruitStatus() {
+  const { settings, loaded } = useSiteSettings();
+  if (!loaded) return null;
+  return (
+    <p className={`inline-block border px-4 py-1.5 font-display text-[11px] font-bold tracking-[0.3em] ${settings.recruitment_open ? "border-silver text-silver" : "border-steel text-steel"}`}>
+      {settings.recruitment_open ? "RECRUTAMENTO ABERTO" : "RECRUTAMENTO TEMPORARIAMENTE FECHADO"}
+    </p>
+  );
+}
 
 export function Hero() {
+  const { settings } = useSiteSettings();
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-16">
       <img src={castle} alt="" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-60" />
@@ -27,11 +39,12 @@ export function Hero() {
         </motion.p>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 0.9 }} className="mt-8 flex flex-col items-center">
           <Ornament />
-          <p className="mt-6 font-display text-base font-bold tracking-[0.4em] text-silver sm:text-lg">FORÇA. HONRA. LEALDADE.</p>
+          <p className="mt-6 font-display text-base font-bold tracking-[0.4em] text-silver sm:text-lg">{settings.home_motto}</p>
           <p className="mt-5 max-w-xl text-base italic text-foreground/80 sm:text-lg">
-            "Não buscamos apenas jogadores. Buscamos guerreiros dispostos a construir uma história."
+            "{settings.intro_text}"
           </p>
-          <Link to="/recrutamento" className="btn-metal mt-10 px-8 py-4 text-xs sm:text-sm">Solicitar Recrutamento</Link>
+          <div className="mt-8"><RecruitStatus /></div>
+          <Link to="/recrutamento" className="btn-metal mt-6 px-8 py-4 text-xs sm:text-sm">Solicitar Recrutamento</Link>
         </motion.div>
       </div>
       <ChevronDown className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-steel" aria-hidden />
@@ -46,6 +59,7 @@ const pillars = [
 ];
 
 export function About() {
+  const { settings } = useSiteSettings();
   return (
     <section className="relative px-4 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
@@ -54,8 +68,7 @@ export function About() {
           <h2 className="mt-4 font-gothic text-4xl text-metal sm:text-6xl">Mais que um clã. Uma legião.</h2>
           <div className="mt-6"><Ornament /></div>
           <p className="mx-auto mt-6 max-w-2xl text-foreground/80">
-            O RDL Infernais é uma comunidade que valoriza a união, a lealdade, o respeito, a evolução conjunta
-            e a participação nas atividades do jogo.
+            {settings.about_text}
           </p>
         </Reveal>
         <div className="mt-16 grid gap-6 md:grid-cols-3">
@@ -81,6 +94,7 @@ export function About() {
 }
 
 export function Recruit() {
+  const { settings } = useSiteSettings();
   return (
     <section className="relative overflow-hidden border-y border-border px-4 py-24 sm:py-32">
       <img src={castle} alt="" loading="lazy" width={1920} height={1088} className="absolute inset-0 size-full object-cover opacity-20" />
@@ -91,10 +105,28 @@ export function Recruit() {
         <h2 className="mt-6 font-gothic text-4xl text-metal sm:text-6xl">Sua jornada começa aqui.</h2>
         <div className="mt-6"><Ornament /></div>
         <p className="mt-6 text-lg text-foreground/80">
-          "Está preparado para fazer parte do RDL Infernais? Apresente seu personagem e demonstre por que merece
-          fazer parte da nossa história."
+          "{settings.recruit_text}"
         </p>
-        <Link to="/recrutamento" className="btn-metal mt-10 inline-block px-8 py-4 text-xs sm:text-sm">Inscrever meu Personagem</Link>
+        <div className="mt-8"><RecruitStatus /></div>
+        <Link to="/recrutamento" className="btn-metal mt-6 inline-block px-8 py-4 text-xs sm:text-sm">Inscrever meu Personagem</Link>
+      </Reveal>
+    </section>
+  );
+}
+
+export function Rules() {
+  const { settings } = useSiteSettings();
+  if (!settings.clan_rules.length) return null;
+  return (
+    <section className="px-4 pb-24">
+      <Reveal className="stone-texture metal-border mx-auto max-w-3xl p-8">
+        <h2 className="text-center font-display text-xl font-bold tracking-[0.3em] text-primary">REGRAS DO CLÃ</h2>
+        <div className="mt-4"><Ornament /></div>
+        <ol className="mt-6 space-y-3">
+          {settings.clan_rules.map((r, i) => (
+            <li key={i} className="flex gap-3 text-foreground/80"><span className="font-display font-bold text-silver">{i + 1}.</span><span>{r}</span></li>
+          ))}
+        </ol>
       </Reveal>
     </section>
   );

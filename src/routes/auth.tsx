@@ -25,6 +25,17 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
+
+  async function forgot() {
+    setError(null); setInfo(null);
+    if (!email.trim()) { setError("Digite seu e-mail acima para recuperar a senha."); return; }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
+    setBusy(false);
+    if (error) { setError("Não foi possível enviar o e-mail. Tente novamente em instantes."); return; }
+    setInfo("Se o e-mail for de um administrador, você receberá um link para criar uma nova senha.");
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -49,6 +60,8 @@ function AuthPage() {
         <button type="submit" disabled={busy} className="btn-metal flex w-full items-center justify-center gap-2 py-3 text-xs">
           {busy ? <Loader2 className="size-4 animate-spin" /> : null} Entrar
         </button>
+        {info && <p role="status" className="text-sm text-silver">{info}</p>}
+        <button type="button" onClick={forgot} disabled={busy} className="block w-full text-center text-xs text-silver underline-offset-4 hover:underline">Esqueci minha senha</button>
         <p className="text-center text-xs text-steel">Acesso somente para administradores autorizados.</p>
       </form>
     </div>

@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as OClaRouteImport } from './routes/o-cla'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const IndexRoute = IndexRouteImport.update({
@@ -46,6 +47,11 @@ const RecrutamentoRoute = RecrutamentoRouteImport.update({
   path: '/recrutamento',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/o-cla': typeof OClaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/o-cla': typeof OClaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRoutesById {
@@ -76,14 +84,28 @@ export interface FileRoutesById {
   '/o-cla': typeof OClaRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/o-cla' | '/privacidade' | '/recrutamento' | '/admin'
+    | '/'
+    | '/auth'
+    | '/o-cla'
+    | '/privacidade'
+    | '/recrutamento'
+    | '/reset-password'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/o-cla' | '/privacidade' | '/recrutamento' | '/admin'
+  to:
+    | '/'
+    | '/auth'
+    | '/o-cla'
+    | '/privacidade'
+    | '/recrutamento'
+    | '/reset-password'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -92,6 +114,7 @@ export interface FileRouteTypes {
     | '/o-cla'
     | '/privacidade'
     | '/recrutamento'
+    | '/reset-password'
     | '/_authenticated/admin'
   fileRoutesById: FileRoutesById
 }
@@ -102,6 +125,7 @@ export interface RootRouteChildren {
   OClaRoute: typeof OClaRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecrutamentoRoute: typeof RecrutamentoRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecrutamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -176,6 +207,7 @@ const rootRouteChildren: RootRouteChildren = {
   OClaRoute: OClaRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecrutamentoRoute: RecrutamentoRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

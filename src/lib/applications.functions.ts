@@ -65,9 +65,28 @@ export const listApplications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
-      .from("applications").select("*").order("created_at", { ascending: false }).limit(500);
+      .from("applications").select("*").order("created_at", { ascending: false }).limit(5000);
     if (error) throw new Error("Falha ao carregar inscrições.");
-    return data;
+    const ids = [...new Set(data.map((a) => a.reviewed_by).filter((x): x is string => !!x))];
+    const names: Record<string, string> = {};
+    if (ids.length) {
+      const { data: profs } = await context.supabase.from("profiles").select("id, display_name").in("id", ids);
+      for (const p of profs ?? []) names[p.id] = p.display_name ?? "Administrador";
+    }
+    return data.map((a) => ({ ...a, reviewer_name: a.reviewed_by ? (names[a.reviewed_by] ?? "Administrador") : null }));
+  });
+
+export const listApplicationEvents = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => z.object({ id: z.string().uuid() }).parse(i))
+  .handler(async ({ data, context }) => {
+    const { data: ev, error } = await context.supabase.from("application_events")
+      .select("*").eq("application_id", data.id).order("created_at", { ascending: false });
+    if (error) throw new Error("Falha ao carregar histórico.");
+    const ids = [...new Set(ev.map((e) => e.admin_id))];
+    const { data: profs } = ids.length ? await context.supabase.from("profiles").select("id, display_name").in("id", ids) : { data: [] };
+    const names = Object.fromEntries((profs ?? []).map((p) => [p.id, p.display_name ?? "Administrador"]));
+    return ev.map((e) => ({ ...e, admin_name: names[e.admin_id] ?? "Administrador" }));
   });
 
 export const updateApplication = createServerFn({ method: "POST" })
@@ -78,9 +97,19 @@ export const updateApplication = createServerFn({ method: "POST" })
     admin_notes: z.string().max(2000),
   }).parse(i))
   .handler(async ({ data, context }) => {
-    const { data: rows, error } = await context.supabase.from("applications")
-      .update({ status: data.status, admin_notes: data.admin_notes || null, reviewed_by: context.userId, reviewed_at: new Date().toISOString() })
-      .eq("id", data.id).select("id");
+    const { data: cur } = await context.supabase.from("applications").select("status, admin_notes").eq("id", data.id).maybeSingle();
+    if (!cur) throw new Error("Sem permissão ou inscrição não encontrada.");
+    const statusChanged = cur.status !== data.status;
+    const patch = statusChanged
+      ? { status: data.status, admin_notes: data.admin_notes || null, reviewed_by: context.userId, reviewed_at: new Date().toISOString() }
+      : { admin_notes: data.admin_notes || null };
+    const { data: rows, error } = await context.supabase.from("applications").update(patch).eq("id", data.id).select("id");
     if (error || !rows?.length) throw new Error("Sem permissão ou inscrição não encontrada.");
+    if (statusChanged || (cur.admin_notes ?? "") !== data.admin_notes) {
+      await context.supabase.from("application_events").insert({
+        application_id: data.id, admin_id: context.userId, old_status: cur.status, new_status: data.status,
+        note: statusChanged ? null : "Observação atualizada",
+      });
+    }
     return { ok: true };
   });

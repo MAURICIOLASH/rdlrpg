@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { About, Recruit } from "@/components/rdl/Sections";
+import { About, Recruit, Rules } from "@/components/rdl/Sections";
 
 export const Route = createFileRoute("/o-cla")({
   head: () => ({
@@ -12,5 +12,5 @@ export const Route = createFileRoute("/o-cla")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (<div className="pt-16"><About /><Recruit /></div>),
+  component: () => (<div className="pt-16"><About /><Rules /><Recruit /></div>),
 });
